@@ -1,0 +1,5 @@
+graph LR
+    A[Create Container] -->|podman run| B(Active Container)
+    B -->|podman generate| C{Systemd Unit File}
+    C -->|systemctl enable| D[Auto-Start on Boot]
+    D -->|systemctl start| E[Service Running]
