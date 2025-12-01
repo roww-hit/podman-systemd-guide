@@ -1,41 +1,28 @@
-Running a Podman Container as a Systemd Service
+# 🐳 Running Podman Containers as Systemd Services
 
-mkdir ~/.config/systemd/user -p – Create the systemd user directory.
+![Podman](https://img.shields.io/badge/Podman-892CA0?style=for-the-badge&logo=podman&logoColor=white)
+![Systemd](https://img.shields.io/badge/Systemd-Target-green?style=for-the-badge&logo=systemd&logoColor=white)
+![Nginx](https://img.shields.io/badge/nginx-%23009639.svg?style=for-the-badge&logo=nginx&logoColor=white)
 
+> A step-by-step guide to managing Podman containers using the Systemd initialization system. This ensures containers start automatically on boot and behave like standard system services.
 
-cd ~/.config/systemd/user – Navigate into the systemd user directory.
+---
 
+## 📋 Table of Contents
+- [Prerequisites](#-prerequisites)
+- [Workflow Diagram](#-workflow-diagram)
+- [Installation Guide](#-installation-guide)
+- [Managing the Service](#-managing-the-service)
+- [Logging & Debugging](#-logging--debugging)
+- [Use Cases](#-use-cases)
 
-podman run -itd --name testcontainer nginx – Start a container in detached mode.
+---
 
+## 🛠 Prerequisites
 
-podman generate systemd --name testcontainer --files --new – Generate systemd service files for the container.
+Before beginning, ensure Podman is installed. 
 
+**Important:** For rootless containers to start on boot without the user being logged in, you must enable "lingering":
 
-systemctl --user daemon-reload – Reload systemd user daemon to detect new files of the service.
-
-
-systemctl --user start container-testcontainer.service – Start the container as a systemd managed service.
-
-
-systemctl --user enable container-testcontainer.service – Enable the service to auto-start on boot/login.
-
-
-
-
-
-
-
-# We can use journalctl to view the container logs:
-
-
-
-
-#Use Cases:
-
-1. Managing small production workloads on VMs
-2. Managing Home-lab setups
-3. You want the container to start automatically after reboot
-4. Full systemctl lifecycle management for containers
-5. Integrated Logging and Auditing
-
+```bash
+loginctl enable-linger $USER
